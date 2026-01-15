@@ -1,0 +1,218 @@
+Commvault deduplication failure scenarios
+
+
+1. Deduplication Database (DDB) Unavailable or Offline
+Symptoms
+
+Backup jobs fail or run in non-dedup mode
+
+Errors referencing DDB access, fingerprint lookup, or hash store
+
+MediaAgent shows DDB offline in Command Center
+
+Common Causes
+
+Disk hosting the DDB is full or read-only
+
+Filesystem corruption
+
+MediaAgent service stopped
+
+Network path issue (if shared DDB)
+
+Troubleshooting
+
+Verify MediaAgent services are running
+
+Check DDB disk space and permissions
+
+Validate filesystem health (I/O errors, latency)
+
+Run DDB verification from Command Center
+
+If corrupted, perform DDB reconstruction (last resort)
+
+Best Practice: Always place DDB on fast, dedicated disk (SSD).
+
+2. Poor or Dropping Deduplication Ratio
+Symptoms
+
+Dedup ratio suddenly decreases
+
+Storage growth higher than expected
+
+More data written during backups
+
+Common Causes
+
+Too many dissimilar workloads in one DDB
+
+Encrypted or compressed source data
+
+Application-level compression (e.g., database dumps)
+
+Frequent full backups instead of incrementals
+
+Troubleshooting
+
+Review workloads sharing the DDB
+
+Separate high-change or encrypted data into another storage policy
+
+Confirm Incremental Forever is enabled
+
+Check job statistics for dedup savings
+
+Design Tip: Group similar data types in the same DDB.
+
+3. DDB Pruning or Maintenance Failures
+Symptoms
+
+DDB grows uncontrollably
+
+Pruning jobs fail or never complete
+
+Storage not reclaimed after data aging
+
+Common Causes
+
+Pruning disabled
+
+Long incremental chains
+
+High retention policies
+
+MediaAgent resource contention
+
+Troubleshooting
+
+Verify DDB pruning schedule is enabled
+
+Confirm data aging is occurring
+
+Check MediaAgent CPU, memory, and disk I/O
+
+Run pruning manually during low-usage windows
+
+Key Point: Pruning depends on successful data aging.
+
+4. Backup Jobs Fall Back to Non-Deduplicated Mode
+Symptoms
+
+Jobs complete but write much more data
+
+Deduplication is bypassed silently
+
+Storage fills unexpectedly
+
+Common Causes
+
+Temporary DDB lock or access failure
+
+MediaAgent overload
+
+Network latency to DDB disk
+
+DDB in read-only or degraded mode
+
+Troubleshooting
+
+Check job logs for “fallback to non-dedup” messages
+
+Validate MediaAgent load and disk latency
+
+Confirm DDB is writable
+
+Restart MediaAgent services if needed
+
+Important: Fallback jobs increase storage usage immediately.
+
+5. Slow Backup or Restore Performance (Dedup-Related)
+Symptoms
+
+Backups take longer than expected
+
+Restores are slow, especially full restores
+
+High MediaAgent CPU usage
+
+Common Causes
+
+DDB located on slow disk
+
+Overloaded MediaAgent
+
+Excessive number of streams
+
+Large, fragmented DDB
+
+Troubleshooting
+
+Check MediaAgent CPU, memory, and I/O wait
+
+Review stream count and throttling settings
+
+Consider moving DDB to SSD
+
+Add or load-balance MediaAgents
+
+Restore Performance Tip: Synthetic fulls help reduce restore chain length.
+
+6. DDB Corruption or Metadata Inconsistency
+Symptoms
+
+Repeated job failures
+
+Hash lookup errors
+
+Verification failures
+
+Common Causes
+
+Improper shutdowns
+
+Disk or filesystem corruption
+
+Hardware issues
+
+Troubleshooting
+
+Run DDB verification
+
+Restore DDB from backup if available
+
+Perform DDB reconstruction if restore fails
+
+Open Commvault support case if needed
+
+Reconstruction is resource-intensive and should be a last resort.
+
+7. DASH Copy or Auxiliary Copy Dedup Issues
+Symptoms
+
+DASH copy jobs fail
+
+Secondary copies consume excessive storage
+
+Dedup not honored on secondary storage
+
+Common Causes
+
+Source and target using different DDBs
+
+Network latency
+
+Misconfigured storage policies
+
+Troubleshooting
+
+Confirm DASH copy configuration
+
+Verify compatible dedup settings on source and target
+
+Check copy job logs for block-level transfer issues
+
+Ensure MediaAgents can communicate efficiently
+
+Common Commvault deduplication failures include DDB unavailability, poor dedup ratios, pruning failures, fallback to non-dedup mode, and DDB corruption. Troubleshooting focuses on MediaAgent health, DDB disk performance, proper maintenance tasks, and correct workload grouping. Protecting and monitoring the DDB is critical for deduplication reliability.
+
