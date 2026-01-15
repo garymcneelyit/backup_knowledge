@@ -1,0 +1,148 @@
+
+
+Commvault Deduplication?
+
+Commvault Deduplication is a block-level data reduction technology that eliminates duplicate data across backups, clients, and backup cycles to reduce storage, network, and backup window impact.
+
+Instead of storing the same data multiple times, Commvault:
+
+Identifies duplicate blocks
+
+Stores one unique copy
+
+Replaces duplicates with references (pointers)
+
+How Commvault Deduplication Works (Step-by-Step)
+1. Block-Level Chunking
+
+Data is broken into variable-length blocks (chunks).
+
+Each chunk is assigned a hash (fingerprint).
+
+2. Deduplication Database (DDB)
+
+Hashes are compared against the Deduplication Database (DDB).
+
+If the block already exists:
+
+The block is not stored again
+
+A reference is created instead
+
+If the block is new:
+
+It is written to storage
+
+The hash is added to the DDB
+
+The DDB is critical metadata—if it’s unavailable, deduplication and restores are impacted.
+
+Where Deduplication Occurs in Commvault
+Client-Side Deduplication
+
+Dedup happens before data is sent to the MediaAgent.
+
+Only unique blocks traverse the network.
+
+Best for:
+
+Remote offices
+
+WAN-constrained environments
+
+Trade-off:
+
+Higher CPU usage on clients
+
+MediaAgent-Side Deduplication
+
+Client sends full data to the MediaAgent.
+
+Dedup occurs at the MediaAgent.
+
+Best for:
+
+Data centers
+
+High-bandwidth environments
+
+Trade-off:
+
+Higher MediaAgent CPU and disk I/O
+
+Deduplication Storage Policy (SP)
+
+Deduplication is configured at the Storage Policy level.
+
+Key components:
+
+Deduplication Store (DDB location)
+
+MediaAgent(s)
+
+Disk library
+
+Multiple storage policies can:
+
+Share a single DDB
+
+Or use separate DDBs for isolation
+
+Deduplication and Backup Types
+
+Deduplication works with:
+
+Full backups
+
+Incremental backups
+
+Synthetic Full backups
+
+Incremental Forever + Deduplication is a common Commvault design for maximum efficiency.
+
+DDB Protection and Maintenance (Very Important)
+DDB Protection
+
+Commvault can protect the DDB itself using:
+
+DDB backups
+
+DASH Copy to secondary storage
+
+Losing the DDB = no deduplication and possible data loss.
+
+DDB Maintenance Tasks
+
+DDB Pruning – removes unused references
+
+DDB Verification – checks integrity
+
+DDB Reconstruction – rebuilds from stored data if needed (time-consuming)
+
+Performance and Design Considerations
+
+Place DDBs on fast disk (SSD recommended)
+
+Avoid overloading a single DDB
+
+Monitor:
+
+Deduplication ratio
+
+DDB growth
+
+MediaAgent CPU and disk latency
+
+Key Benefits of Commvault Deduplication
+
+Significant storage savings
+
+Reduced network bandwidth usage
+
+Faster backups
+
+Enables scalable, enterprise-wide data protection
+
+
+Commvault deduplication uses variable-length block-level hashing and a centralized deduplication database to store only unique data blocks across backups, reducing storage, network usage, and backup windows while supporting full, incremental, and synthetic full backups.
+
