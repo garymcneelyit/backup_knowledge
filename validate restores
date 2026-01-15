@@ -1,0 +1,129 @@
+validating restores
+
+1. Preparation & Scoping
+
+Before initiating a restore, I confirm what success looks like.
+
+Identify restore objective
+
+File-level, application-level, VM, database, or full system
+
+Point-in-time (RPO) and urgency (RTO)
+
+Confirm backup health
+
+Job status, completion time, backup type (full/incremental/synthetic)
+
+Verify no active errors (e.g., DDB issues, media errors, snapshot failures)
+
+Choose restore method
+
+In-place vs out-of-place
+
+Alternate location / sandbox / DR environment
+
+Access & change control
+
+Confirm permissions, approvals, and maintenance windows if required
+
+2. Restore Execution
+
+Execution is done methodically to minimize risk.
+
+Select correct backup copy
+
+Primary vs secondary copy
+
+Disk vs tape vs cloud tier
+
+Perform restore
+
+Use test restore first if possible (especially for Tier 1 systems)
+
+For application-aware restores:
+
+Ensure proper agents, credentials, and consistency options
+
+Monitor restore job
+
+Track throughput, media access, and error messages
+
+Address common issues:
+
+Network bottlenecks
+
+Media mount delays
+
+Permission or path conflicts
+
+3. Validation & Verification (Most Critical Step)
+
+A restore is not complete until it is validated.
+
+Technical Validation
+
+File restores
+
+Verify file presence, size, permissions, and timestamps
+
+VM restores
+
+Power on VM
+
+Confirm OS boot, network connectivity, and disk integrity
+
+Application/database restores
+
+Confirm services start cleanly
+
+Run basic queries or application health checks
+
+Validate logs (DB consistency checks where applicable)
+
+User/Application Validation
+
+Work with application owners to:
+
+Confirm data usability
+
+Validate business functionality
+
+For DR tests:
+
+Confirm application dependencies and integration points
+
+4. Documentation, Reporting & Feedback Loop
+
+Post-restore activities improve future success.
+
+Document restore details
+
+Backup set used
+
+Restore duration vs RTO
+
+Any errors or manual intervention
+
+Update runbooks
+
+Add lessons learned
+
+Adjust restore procedures or scripts
+
+Recommend improvements
+
+Backup frequency adjustments
+
+Infrastructure tuning (network, storage, dedupe)
+
+Agent or configuration changes
+
+Key Principles I Follow
+
+Assume backups are untrusted until restored
+
+Test restores regularly, not just during incidents
+
+Tier 1 systems get scheduled restore tests
+
+Validation is both technical and business-facing
