@@ -1,0 +1,151 @@
+How do you design a backup strategy for Tier 1 vs Tier 3 systems
+
+
+Designing a backup strategy by system tier is about aligning business risk, recovery objectives, and cost. Tier 1 systems get aggressive protection and fast recovery; Tier 3 systems get cost-efficient, slower recovery. Below is a practical, enterprise-ready breakdown (vendor-agnostic, but maps cleanly to Commvault, NetBackup, Veeam, etc.).
+
+1. Start With the Business Requirements
+Factor	Tier 1 (Mission-Critical)	Tier 3 (Non-Critical)
+Business Impact	Revenue loss, safety, regulatory	Productivity impact only
+Downtime Tolerance	Minutes to hours	Days acceptable
+Data Loss Tolerance	Near-zero	Significant loss acceptable
+Compliance	Often regulated	Usually none
+
+This drives RPO, RTO, retention, and architecture.
+
+2. Define RPO / RTO Targets
+Tier	Typical RPO	Typical RTO
+Tier 1	0–15 minutes	< 1 hour
+Tier 2	1–4 hours	Same day
+Tier 3	24 hours	24–72 hours
+
+Rule of thumb: RPO determines backup frequency, RTO determines restore method.
+
+3. Backup Methods by Tier
+Tier 1 – Mission Critical
+
+Goal: Fast recovery, minimal data loss
+
+Common Techniques
+
+Continuous or near-continuous protection
+
+Snapshot-based backups
+
+Log backups every 5–15 minutes
+
+Application-aware backups (DB, ERP, email)
+
+Synthetic fulls to reduce backup window
+
+Replication to secondary site or cloud
+
+Immutable backups (ransomware protection)
+
+Example Strategy
+
+Hourly snapshots (retained 24–48 hours)
+
+Daily synthetic full
+
+Log backups every 5–15 minutes
+
+Replication to DR site
+
+Long-term retention in object storage
+
+Restore Methods
+
+Instant VM / live mount
+
+Snapshot rollback
+
+Database point-in-time restore
+
+Tier 3 – Non-Critical
+
+Goal: Low cost, acceptable data loss
+
+Common Techniques
+
+Daily incremental or incremental-forever
+
+Weekly full or synthetic full
+
+No replication
+
+Standard disk → object storage (cloud or tape)
+
+Example Strategy
+
+Daily incremental backups
+
+Weekly synthetic full
+
+Monthly or quarterly archive
+
+No snapshot integration required
+
+Restore Methods
+
+Full restore from backup media
+
+Manual application recovery
+
+4. Retention Policies
+Tier	Short-Term	Long-Term
+Tier 1	30–90 days disk	1–7 years (compliance)
+Tier 3	14–30 days disk	3–12 months
+
+Tier 1 retention is often driven by audit, legal hold, or SOX/HIPAA requirements.
+
+5. Storage & Cost Optimization
+Tier 1
+
+High-performance disk (SSD/NVMe)
+
+Deduplication tuned for performance
+
+Separate storage pools for hot vs cold data
+
+Cloud replication for DR, not primary backup
+
+Tier 3
+
+Deduplicated disk
+
+Object storage (S3, Azure Blob, Wasabi)
+
+Tape (if still used) for long-term archive
+
+6. Security & Resiliency Differences
+Feature	Tier 1	Tier 3
+MFA on backup admin	Required	Recommended
+Immutability	Required	Optional
+Air-gap / vault copy	Required	Rare
+Regular restore testing	Quarterly or monthly	Annual
+7. Testing & Validation
+Tier 1
+
+Scheduled DR tests
+
+Automated restore verification
+
+Application-level validation
+
+Audit reports
+
+Tier 3
+
+Spot-check restores
+
+Basic job success monitoring
+
+8. Example Summary Table
+Area	Tier 1	Tier 3
+Backup Frequency	Continuous / Hourly	Daily
+Backup Type	Snapshots + Logs	Incremental
+RPO	Minutes	24 hrs
+RTO	< 1 hr	1–3 days
+Replication	Yes	No
+Immutability	Yes	Optional
+Cost	High	Low
