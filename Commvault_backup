@@ -1,0 +1,130 @@
+How full, incremental, and synthetic full backups work in Commvault
+
+1. Full Backup (Commvault Full)
+
+Commvault behavior:
+A Full backup reads all protected data directly from the client and writes it to the MediaAgent and storage.
+
+Key points in Commvault:
+
+Creates a baseline for future incrementals.
+
+Can be Primary Full or Auxiliary Copy Full (for secondary storage).
+
+Typically scheduled weekly or monthly.
+
+Pros in Commvault:
+
+Fastest restores (single job)
+
+Simplest recovery chain
+
+Required periodically to limit incremental chain length
+
+Cons in Commvault:
+
+Long backup window
+
+High load on client, network, and MediaAgent
+
+Large storage consumption
+
+Example:
+Weekly Primary Full to disk, followed by daily incrementals.
+
+2. Incremental Backup (Commvault Incremental)
+
+Commvault behavior:
+An Incremental backup captures only blocks/files changed since the last successful backup job (full or incremental).
+
+Key points in Commvault:
+
+Uses change tracking when available (CBT for VMs, USN Journal for Windows, etc.).
+
+Short backup window.
+
+Builds a backup chain that depends on the last full.
+
+Pros in Commvault:
+
+Minimal client impact
+
+Efficient for daily backups
+
+Works well with deduplication
+
+Cons in Commvault:
+
+Restore may require multiple jobs
+
+Longer restore times for older recovery points
+
+Chain integrity is critical
+
+Example:
+Daily incrementals Monday–Saturday.
+
+3. Synthetic Full Backup (Commvault Synthetic Full)
+
+Commvault behavior:
+A Synthetic Full is created entirely on the MediaAgent, by combining:
+
+The most recent Full backup
+
+All subsequent Incrementals
+
+No data is re-read from the client.
+
+Key points in Commvault:
+
+MediaAgent reconstructs a new full backup set.
+
+Requires all incrementals to be present and valid.
+
+Often used in disk-based, deduplicated environments.
+
+Pros in Commvault:
+
+Eliminates client read load
+
+Much shorter backup windows
+
+Produces a “full-equivalent” recovery point
+
+Cons in Commvault:
+
+MediaAgent and storage I/O intensive
+
+Not ideal if incrementals are missing or corrupted
+
+Slightly more complex operationally
+
+Example:
+Weekly Synthetic Full built from daily incrementals.
+
+__Commvault “Incremental Forever” Strategy
+
+Commvault often promotes Incremental Forever, which combines:
+
+One initial Full
+
+Ongoing Incrementals
+
+Periodic Synthetic Fulls for consolidation
+
+Benefits:
+
+Minimal production impact
+
+Efficient storage usage
+
+Still provides regular full restore points
+
+___
+Full backups read all data from the client and provide the fastest restores.
+Incrementals capture only changed data and minimize backup windows.
+Synthetic fulls are built on the MediaAgent by merging full and incremental backups, providing full restore points without impacting production systems.
+
+
+
+
