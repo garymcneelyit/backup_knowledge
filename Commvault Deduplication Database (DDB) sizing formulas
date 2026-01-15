@@ -1,0 +1,113 @@
+Commvault Deduplication Database (DDB) sizing formulas
+
+1. Core DDB Sizing Formula (Rule of Thumb)
+Primary Formula
+
+DDB Size = 2–4% of the total protected front-end data
+
+2% → Low change rate, good dedup, mostly incremental
+
+4% → High change rate, many clients, aggressive retention
+
+Example
+
+100 TB protected data
+
+DDB size = 2–4 TB
+
+2. More Accurate Formula (Change-Rate Based)
+
+This is closer to what Commvault architects actually use:
+
+DDB Size ≈ Unique Data × 3–5%
+
+Where:
+
+Unique Data = data after deduplication (back-end size)
+
+Example
+
+Front-end data: 100 TB
+
+Dedup ratio: 10:1
+
+Unique data: 10 TB
+
+DDB size ≈ 300–500 GB
+
+This explains why good dedup ratios dramatically reduce DDB growth.
+
+3. Daily Growth Estimation Formula
+
+Useful for capacity planning:
+
+Daily DDB Growth ≈ Daily Changed Data × 3–5%
+
+Example
+
+Daily change rate: 1 TB
+
+Daily DDB growth: 30–50 GB/day
+
+4. Client-Side vs MediaAgent-Side Dedup Impact
+Dedup Type	DDB Growth	Notes
+Client-Side	Slightly higher	More fingerprints generated
+MediaAgent-Side	Slightly lower	Centralized processing
+5. Streams and DDB Sizing Relationship
+
+High stream counts increase:
+
+Fingerprint generation
+
+DDB lookup activity
+
+Rule of Thumb:
+
+Increase DDB size by 10–20% for high-stream or high-concurrency environments
+
+6. DDB Disk Performance Requirements (Sizing Adjacent)
+
+Even a correctly sized DDB will fail if performance is poor.
+
+Recommended:
+
+SSD or NVMe only
+
+Dedicated filesystem
+
+Low latency (<5 ms preferred)
+
+Rough IOPS Guideline:
+
+~50–75 IOPS per active backup stream
+
+7. When to Split DDBs (Very Important)
+
+You should create multiple DDBs when:
+
+DDB exceeds 10–15 TB
+
+Mixed workloads (VMs + DB dumps + file servers)
+
+Dedup ratio drops unexpectedly
+
+MediaAgent CPU consistently high
+
+8. DDB Protection Sizing (Don’t Forget This)
+
+You must also size for:
+
+DDB backups
+
+DASH copies
+
+Reconstruction overhead
+
+Add 10–20% overhead to your calculated DDB size.
+
+
+Front-end sizing:   2–4%
+Unique data sizing: 3–5%
+Daily growth:       Change rate × 3–5%
+Disk:               SSD/NVMe only
+Split DDBs:         >10–15 TB
