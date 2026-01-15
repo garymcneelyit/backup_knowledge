@@ -1,8 +1,7 @@
 How do you design a backup strategy for Tier 1 vs Tier 3 systems
 
 
-Designing a backup strategy by system tier is about aligning business risk, recovery objectives, and cost. Tier 1 systems get aggressive protection and fast recovery; Tier 3 systems get cost-efficient, slower recovery. Below is a practical, enterprise-ready breakdown (vendor-agnostic, but maps cleanly to Commvault, NetBackup, Veeam, etc.).
-
+Designing a backup strategy by system tier is about aligning business risk, recovery objectives, and cost. Tier 1 systems get aggressive protection and fast recovery; Tier 3 systems get cost-efficient, slower recovery. 
 1. Start With the Business Requirements
 Factor	Tier 1 (Mission-Critical)	Tier 3 (Non-Critical)
 Business Impact	Revenue loss, safety, regulatory	Productivity impact only
