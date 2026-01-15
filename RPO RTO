@@ -1,0 +1,94 @@
+How do you ensure backups meet RPO and RTO requirements
+
+RPO (Recovery Point Objective) and RTO (Recovery Time Objective)
+
+
+
+1. Understand RPO and RTO Requirements
+
+RPO: Maximum acceptable data loss measured in time. E.g., if RPO is 4 hours, backups must occur at least every 4 hours.
+
+RTO: Maximum acceptable downtime before business operations are restored. E.g., if RTO is 2 hours, the restore process must complete within that window.
+
+Action: Gather requirements from business units, compliance teams, and service-level agreements (SLAs).
+
+2. Design Backup Strategy Around Requirements
+
+Backup Frequency: Set schedules that align with RPO. For short RPOs, consider frequent incremental or continuous backups.
+
+Backup Types: Use a mix of:
+
+Full backups (baseline)
+
+Incremental/differential backups (for frequent changes)
+
+Snapshots or replication (near-zero RPO)
+
+Storage Tiering: Place critical data on faster storage for quicker recovery.
+
+3. Test Backup and Restore Processes
+
+Restore Testing: Periodically perform restores to validate:
+
+RTO can be met (can data be restored in the required time?)
+
+RPO is respected (are all expected data points recoverable?)
+
+Automation: Use scripts or tools to automate restores for consistent timing and verification.
+
+4. Monitor Backup Jobs and Alerts
+
+Track backup completion, success rates, and duration.
+
+Set alerts for failures or incomplete backups.
+
+Ensure monitoring includes:
+
+Last backup timestamp
+
+Backup size and growth
+
+Verification or checksum reports
+
+5. Validate Backup Integrity
+
+Perform checksum/hash validation to ensure backups are not corrupted.
+
+Periodically perform test recoveries on a non-production environment.
+
+Consider backup solutions with built-in deduplication and verification.
+
+6. Document Procedures and Maintain SLAs
+
+Document backup schedules, retention policies, and recovery procedures.
+
+Include step-by-step instructions for critical systems to meet RTO.
+
+Keep an up-to-date runbook for disaster recovery teams.
+
+7. Optimize for Fast Recovery
+
+Use technologies like:
+
+Snapshots for near-instant restores
+
+Replication to DR sites for fast failover
+
+Bare-metal restores for full system recovery
+
+Ensure network bandwidth and compute resources support required restore speeds.
+
+Summary:
+To meet RPO and RTO:
+
+Know your business requirements.
+
+Schedule backups to match RPO.
+
+Use appropriate backup methods and storage.
+
+Test restores to validate RTO.
+
+Monitor and verify backup integrity.
+
+Document processes for consistent execution.
