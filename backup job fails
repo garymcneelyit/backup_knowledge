@@ -1,0 +1,204 @@
+What steps do you take when a backup job consistently fails?
+
+When a backup job consistently fails, I take a structured, layer-by-layer approach to isolate whether the issue is configuration, infrastructure, application, or data-related.
+
+1. Confirm the Failure Pattern
+
+Goal: Determine if this is systemic or job-specific.
+
+Review job history: when did failures start?
+
+Identify failure type:
+
+Always fails at the same percentage or phase
+
+Intermittent vs consistent
+
+Single client vs multiple clients
+
+Check recent changes:
+
+OS patches, application upgrades
+
+Backup agent updates
+
+Storage or network changes
+
+Credential or permission changes
+
+If multiple jobs fail after the same date, I suspect infrastructure or policy changes first.
+
+2. Review Error Messages & Logs
+
+Goal: Use the error to narrow the scope.
+
+Review:
+
+Backup application job logs (Commvault, NetBackup, Veeam, etc.)
+
+Client-side logs (agent, VSS, RMAN, filesystem)
+
+Look beyond the top-level error:
+
+“Failed to open snapshot”
+
+“Read error on object”
+
+“Network read/write failure”
+
+“Insufficient disk space”
+
+Correlate timestamps across:
+
+Backup server
+
+Media agent / proxy
+
+Client
+
+I look for root cause indicators, not just symptoms.
+
+3. Validate Client Health
+
+Goal: Eliminate client-side blockers.
+
+Check:
+
+Backup agent status and version compatibility
+
+Client connectivity (ping, ports, name resolution)
+
+CPU, memory, disk I/O pressure during backup window
+
+Validate permissions:
+
+Service account rights
+
+File or application ownership
+
+For Windows:
+
+Check VSS writers and shadow copy status
+
+For Linux:
+
+Check filesystem errors, stale mounts, inode exhaustion
+
+4. Check Backup Configuration
+
+Goal: Ensure policy and job settings are correct.
+
+Review:
+
+Backup type (full / incremental / synthetic)
+
+Include/exclude rules
+
+Application-aware settings
+
+Verify:
+
+Correct storage policy
+
+Retention not causing media conflicts
+
+No overlapping jobs or schedules
+
+Test:
+
+Run a small or manual backup to isolate data scope issues
+
+Misconfigured exclusions or stale paths are common causes.
+
+5. Inspect Storage & Media
+
+Goal: Ensure backups have a healthy target.
+
+Check:
+
+Disk library or tape availability
+
+Storage capacity and watermarks
+
+Deduplication database (DDB) health
+
+Validate:
+
+Media agent disk latency
+
+Fragmentation or corruption indicators
+
+For dedupe systems:
+
+Check pruning, aging, and sealing processes
+
+Verify no read-only or offline disk paths
+
+6. Verify Network & Throughput
+
+Goal: Rule out transport failures.
+
+Confirm:
+
+No packet loss or latency spikes
+
+Firewall rules unchanged
+
+Backup ports open and stable
+
+Check:
+
+NIC errors
+
+MTU mismatches
+
+WAN acceleration or throttling rules
+
+Network issues often appear as random read/write failures.
+
+7. Reproduce and Isolate
+
+Goal: Prove the fix or isolate the variable.
+
+Run:
+
+Backup to an alternate storage target
+
+Backup using a different media agent or proxy
+
+Change one variable at a time
+
+If application-aware:
+
+Test file-system-only backup to isolate app issues
+
+8. Apply Fix & Monitor
+
+Goal: Ensure the issue is resolved permanently.
+
+Implement corrective action:
+
+Patch, reconfigure, resize, or restart services
+
+Run multiple successful backup cycles
+
+Validate restore functionality if applicable
+
+Update documentation and change records
+
+9. Escalate with Evidence (If Needed)
+
+Goal: Efficient vendor or internal escalation.
+
+Provide:
+
+Error codes and timestamps
+
+Job IDs and logs
+
+Recent change history
+
+Reproduction steps
+
+Act as primary point of contact until resolution
+
