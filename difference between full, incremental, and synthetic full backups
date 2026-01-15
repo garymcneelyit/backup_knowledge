@@ -1,0 +1,124 @@
+Explain the difference between full, incremental, and synthetic full backups.
+
+1. Full Backup
+
+What it is:
+A full backup copies all selected data every time the backup runs.
+
+How it works:
+
+Each backup is complete and self-contained.
+
+Restore requires only this one backup set.
+
+Pros:
+
+Fast and simple restores
+
+Easiest to manage and verify
+
+Least risk during recovery
+
+Cons:
+
+Longest backup window
+
+Uses the most storage
+
+Highest impact on network and systems
+
+Common use:
+
+Initial baseline backup
+
+Weekly or monthly backups
+
+Systems where restore speed is critical
+
+2. Incremental Backup
+
+What it is:
+An incremental backup copies only the data that has changed since the last backup (full or incremental).
+
+How it works:
+
+Day 1: Full backup
+
+Day 2: Incremental (changes since Day 1)
+
+Day 3: Incremental (changes since Day 2), etc.
+
+Pros:
+
+Smallest backup size
+
+Fastest backups
+
+Minimal system and network impact
+
+Cons:
+
+Restores take longer
+
+Restore requires the last full backup plus every incremental since
+
+More risk if one incremental backup is missing or corrupted
+
+Common use:
+
+Daily backups in enterprise environments
+
+Bandwidth-constrained systems
+
+3. Synthetic Full Backup
+
+What it is:
+A synthetic full backup is a new full backup created by the backup system, not by re-reading data from the production system.
+
+How it works:
+
+Backup software combines:
+
+The last full backup
+
+All subsequent incremental backups
+
+This process happens on the backup storage, not on the source system.
+
+Pros:
+
+Acts like a full backup for restores
+
+Reduces load on production systems
+
+Shorter backup windows compared to traditional full backups
+
+Cons:
+
+Requires more capable backup storage
+
+Slightly more complex to manage
+
+Can increase load on backup infrastructure
+
+Common use:
+
+Modern enterprise backup platforms (e.g., Veeam, NetBackup, Commvault)
+
+Environments with tight backup windows
+
+Quick Comparison
+Backup Type	Data Backed Up	Backup Time	Restore Time	Storage Use
+Full	All data	Long	Fast	High
+Incremental	Changes only	Short	Long	Low
+Synthetic Full	All data*	Medium	Fast	Medium
+
+*Created by merging previous backups, not re-copying from production.
+
+Simple rule of thumb:
+
+Full = easiest restore
+
+Incremental = fastest backups
+
+Synthetic full = best balance for enterprise environments
